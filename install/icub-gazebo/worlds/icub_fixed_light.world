@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="default">
+
+    <!-- Lights -->
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <light name='light1' type='point'>
+      <cast_shadows>1</cast_shadows>
+      <pose>2 0 3 0 0 0</pose>
+      <diffuse>0.32 0.32 0.32 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+    </light>
+
+
+    <!-- Ground Plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- iCub -->
+    <include>
+        <uri>model://icub_fixed</uri>
+    </include>
+
+  </world>
+</sdf>
+
+
