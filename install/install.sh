@@ -18,7 +18,7 @@
 set -e
 
 BASEDIR=$(realpath $(dirname "$0"))
-EXESRC=$(realpath $BASEDIR/../basic_setup)
+EXESRC=$(realpath $BASEDIR/../test_objects)
 codename=`lsb_release -sc`
 OPT_DIR=${HOME}/opt
 YARP_DIR=${OPT_DIR}/yarp
@@ -52,6 +52,7 @@ sudo apt-get install -y qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev \
 	qtdeclarative5-qtquick2-plugin qtdeclarative5-window-plugin \
 	qtdeclarative5-qtmultimedia-plugin qtdeclarative5-controls-plugin \
 	qtdeclarative5-dialogs-plugin libqt5svg5
+sudo apt-get install -y default-jdk
 
 # Make sure we are running a valid Ubuntu distribution
 if [[ $(lsb_release -si) != "Ubuntu" ]]; then
@@ -120,6 +121,7 @@ if [[ ! -d ${YARP_DIR} ]]; then
     cmake -DCMAKE_INSTALL_PREFIX=${YARP_DIR} \
         -DCREATE_GUIS:BOOL=ON \
         -DYARP_COMPILE_BINDINGS:BOOL=ON \
+        -DCREATE_JAVA:BOOL=ON .. \
         -DCREATE_PYTHON:BOOL=ON ..
     make install
     sudo ldconfig
@@ -130,7 +132,7 @@ else
 fi
  
 
-YARPPYTHONPATH=$(find  ~/opt/yarp -type d | grep "python"|grep "site-packages")  
+YARPPYTHONPATH=$(find  ~/opt/yarp -type d | grep "python"|grep "\-packages"|head -1)  
 export YARP_DIR=${YARP_DIR}
 export YARP_DATA_DIRS=${YARP_DATA_DIRS}:${YARP_DIR}
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${YARP_DIR}/lib
@@ -346,14 +348,14 @@ else
     echo "gazebo web client already installed"
 fi
 
-# GOAL-ROBOT EXE
+# test
 echo -e "\n\n\n"
 echo "----------------------------------------------------------------------------"
 echo "----------------------------------------------------------------------------"
 echo "----------------------------------------------------------------------------"
 echo "build GOAL-Robot controller for testing"
 
-BUILDEXE_DIR=${BASEDIR}/../grdemo_build
+BUILDEXE_DIR=${BASEDIR}/../test_build
 [[ ! -z $BUILDEXE_DIR ]] && rm -fr $BUILDEXE_DIR/*
 mkdir -p $BUILDEXE_DIR
 cd  $BUILDEXE_DIR
